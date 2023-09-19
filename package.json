@@ -1,0 +1,15 @@
+{
+  "name": "my-node-assignment",
+  "version": "1.0.0",
+  "description": "A project for tracking and sharing audiovisual content preferences.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["audiovisual", "tracker", "movies", "series", "animes"],
+  "author": "GentleyR",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
