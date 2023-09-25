@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AV-Tracker Assignment</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the AV-Tracker Assignment</h1>
+    </div>
+    <p>Click the buttons below to fetch data from the server:</p>
+
+    <button onclick="fetchData(5)">Fetch data for 5</button>
+    <button onclick="fetchData(10)">Fetch data for 10</button>
+    
+    <div id="result"></div>
+    <nav>
+        <button onclick="navigateTo('/about')">About</button>
+        <button onclick="navigateTo('/contact')">Contact</button>
+        
+    </nav>
+    <footer>
+        <p>&copy; 2023 AV-Tracker</p>
+    </footer>
+</body>
+</html>

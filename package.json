@@ -6,7 +6,13 @@
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": ["audiovisual", "tracker", "movies", "series", "animes"],
+  "keywords": [
+    "audiovisual",
+    "tracker",
+    "movies",
+    "series",
+    "animes"
+  ],
   "author": "GentleyR",
   "license": "ISC",
   "dependencies": {
