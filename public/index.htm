@@ -11,17 +11,51 @@
     <div class="container">
         <h1>Welcome to the AV-Tracker Assignment</h1>
     </div>
-    <p>Click the buttons below to fetch data from the server:</p>
 
-    <button onclick="fetchData(5)">Fetch data for 5</button>
-    <button onclick="fetchData(10)">Fetch data for 10</button>
-    
-    <div id="result"></div>
+    <!-- CRUD UI for User -->
+    <section class="crud-section">
+        <h2>User Operations</h2>
+        
+        <!-- Create User -->
+        <fieldset>
+            <legend>Create User</legend>
+            <input type="text" id="username" placeholder="Enter username">
+            <input type="text" id="email" placeholder="Enter email">
+            <button onclick="createUser()">Create User</button>
+            <div id="create-result"></div>
+        </fieldset>
+
+        <!-- Retrieve User -->
+        <fieldset>
+            <legend>Retrieve User</legend>
+            <input type="text" id="search-username" placeholder="Search by username">
+            <button onclick="retrieveUser()">Search User</button>
+            <div id="search-result"></div>
+        </fieldset>
+
+        <!-- Update User -->
+        <fieldset>
+            <legend>Update User Email</legend>
+            <input type="number" id="update-id" placeholder="Enter user ID">
+            <input type="text" id="new-email" placeholder="Enter new email">
+            <button onclick="updateUser()">Update User</button>
+            <div id="update-result"></div>
+        </fieldset>
+
+        <!-- Delete User -->
+        <fieldset>
+            <legend>Delete User</legend>
+            <input type="number" id="delete-id" placeholder="Enter user ID to delete">
+            <button onclick="deleteUser()">Delete User</button>
+            <div id="delete-result"></div>
+        </fieldset>
+    </section>
+
     <nav>
         <button onclick="navigateTo('/about')">About</button>
         <button onclick="navigateTo('/contact')">Contact</button>
-        
     </nav>
+
     <footer>
         <p>&copy; 2023 AV-Tracker</p>
     </footer>
