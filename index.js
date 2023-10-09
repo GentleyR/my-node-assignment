@@ -3,60 +3,14 @@ const app = express();
 const knexConfig = require('./knexfile').development;
 const knex = require('knex')(knexConfig);
 
-// Middlewares
-app.use(express.json());
 
-// API Routes for the 'projects' table
-
-// Create project
-app.post('/api/projects', async (req, res) => {
-    try {
-        const { user_id, project_name, description } = req.body;
-        const result = await knex('projects').insert({ user_id, project_name, description }).returning('*');
-        res.json(result[0]);
-    } catch (error) {
-        res.status(500).json({ error: 'Database error' });
-    }
-});
-
-// Retrieve projects by name
-app.get('/api/projects', async (req, res) => {
-    try {
-        const { project_name } = req.query;
-        const result = await knex('projects').where('project_name', 'LIKE', `%${project_name}%`);
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({ error: 'Database error' });
-    }
-});
-
-// Update project by ID
-app.put('/api/projects/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const updatedData = req.body;
-        await knex('projects').where({ id }).update(updatedData);
-        res.json({ success: true });
-    } catch (error) {
-        res.status(500).json({ error: 'Database error' });
-    }
-});
-
-// Delete project by ID
-app.delete('/api/projects/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        await knex('projects').where({ id }).del();
-        res.json({ success: true });
-    } catch (error) {
-        res.status(500).json({ error: 'Database error' });
-    }
-});
-
-// General routes
+// Serve the main index.htm file when someone goes to /
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.htm');
 });
+
+// Serve static files from the public directory
+app.use('/static', express.static('public'));
 
 app.get('/about', (req, res) => {
     res.sendFile(__dirname + '/public/about.htm');
@@ -71,11 +25,52 @@ app.get('/api/number/:num', (req, res) => {
     res.json({ originalNumber: num, doubledNumber: num * 2 });
 });
 
-// Static files serving
-app.use('/static', express.static('public'));
-
-// Server start
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+app.post('/api/users', async (req, res) => {
+    const { username, email } = req.body;
+    try {
+      const [id] = await knex('users').insert({ username, email });
+      const newUser = await knex('users').where({ id }).first();
+      res.json(newUser);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to insert user' });
+    }
+});
+
+app.get('/api/users', async (req, res) => {
+    const { username } = req.query;
+    try {
+      const users = await knex('users').where('username', 'like', `%${username}%`);
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to retrieve users' });
+    }
+});
+
+app.put('/api/users/:id', async (req, res) => {
+    const { id } = req.params;
+    const { email } = req.body;
+    try {
+      await knex('users').where({ id }).update({ email });
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to update user' });
+    }
+});
+
+app.delete('/api/users/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      await knex('users').where({ id }).del();
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to delete user' });
+    }
+});
+  
+  
+  
