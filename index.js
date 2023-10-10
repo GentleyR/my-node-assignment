@@ -1,8 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 const knexConfig = require('./knexfile').development;
 const knex = require('knex')(knexConfig);
 
+// Middlewares
+app.use(cors());
+app.use(bodyParser.json());
 
 // Serve the main index.htm file when someone goes to /
 app.get('/', (req, res) => {
@@ -25,11 +30,6 @@ app.get('/api/number/:num', (req, res) => {
     res.json({ originalNumber: num, doubledNumber: num * 2 });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
 app.post('/api/users', async (req, res) => {
     const { username, email } = req.body;
     try {
@@ -37,7 +37,7 @@ app.post('/api/users', async (req, res) => {
       const newUser = await knex('users').where({ id }).first();
       res.json(newUser);
     } catch (error) {
-      res.status(500).json({ error: 'Failed to insert user' });
+      res.status(500).json({ error: error.message });
     }
 });
 
@@ -47,7 +47,7 @@ app.get('/api/users', async (req, res) => {
       const users = await knex('users').where('username', 'like', `%${username}%`);
       res.json(users);
     } catch (error) {
-      res.status(500).json({ error: 'Failed to retrieve users' });
+      res.status(500).json({ error: error.message });
     }
 });
 
@@ -58,7 +58,7 @@ app.put('/api/users/:id', async (req, res) => {
       await knex('users').where({ id }).update({ email });
       res.json({ success: true });
     } catch (error) {
-      res.status(500).json({ error: 'Failed to update user' });
+      res.status(500).json({ error: error.message });
     }
 });
 
@@ -68,9 +68,11 @@ app.delete('/api/users/:id', async (req, res) => {
       await knex('users').where({ id }).del();
       res.json({ success: true });
     } catch (error) {
-      res.status(500).json({ error: 'Failed to delete user' });
+      res.status(500).json({ error: error.message });
     }
 });
-  
-  
-  
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
